@@ -13,7 +13,7 @@ $provision_common = <<SCRIPT
 apt-get update
 apt-get install -qy git
 
-git clone https://github.com/maniaque/k1s.git
+git clone https://github.com/LinarNadyrov/small_k8s.git
 SCRIPT
 
 $provision_master = <<SCRIPT
