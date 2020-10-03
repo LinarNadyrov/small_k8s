@@ -2,12 +2,16 @@
 # vi: set ft=ruby :
 
 NAME_MASTER="k1s-master"
+NAME_NODE_1="k1s-node1"
+NAME_NODE_2="k1s-node2"
+
 NAME_NODE="k1s-node"
 
 $network = ENV["NETWORK"] || "calico"
 
-$ip_master = "192.168.33.110"
-$ip_node = "192.168.33.120"
+$ip_master = "192.168.33.100"
+$ip_node_1 = "192.168.33.110"
+$ip_node_2 = "192.168.33.120"
 
 $provision_common = <<SCRIPT
 apt-get update
@@ -17,7 +21,7 @@ git clone https://github.com/LinarNadyrov/small_k8s.git
 SCRIPT
 
 $provision_master = <<SCRIPT
-cd k1s
+cd small_k8s
 
 ./install
 
@@ -29,11 +33,13 @@ rm -rf ~/.kube
 SCRIPT
 
 $provision_node = <<SCRIPT
-cd k1s
+cd small_k8s
 
 ./install
 
-./join $(ip a | grep "#{$ip_node}" | grep -o \"[^ ]\\+$\") #{$ip_master}:6443
+./join $(ip a | grep "#{$ip_node_1}" | grep -o \"[^ ]\\+$\") #{$ip_master}:6443
+
+./join $(ip a | grep "#{$ip_node_2}" | grep -o \"[^ ]\\+$\") #{$ip_master}:6443
 
 echo 'Done! Joined.'
 SCRIPT
@@ -60,13 +66,27 @@ Vagrant.configure("2") do |config|
     master.vm.provision "shell", inline: $provision_master
   end
 
-  config.vm.define NAME_NODE do |node|
-    node.vm.hostname = NAME_NODE
-    node.vm.network "private_network", ip: $ip_node
+  config.vm.define NAME_NODE_1 do |node|
+    node.vm.hostname = NAME_NODE_1
+    node.vm.network "private_network", ip: $ip_node_1
 
     node.vm.provider "virtualbox" do |vb|
       vb.memory = "2048"
-      vb.name = NAME_NODE
+      vb.name = NAME_NODE_1
+      vb.cpus = 2
+    end
+
+    node.vm.provision "shell", inline: $provision_node
+  end
+  
+
+  config.vm.define NAME_NODE_2 do |node|
+    node.vm.hostname = NAME_NODE_2
+    node.vm.network "private_network", ip: $ip_node_2
+
+    node.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.name = NAME_NODE_2
       vb.cpus = 2
     end
 

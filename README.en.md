@@ -57,4 +57,4 @@ To see interface names start it without parameters:
 
 To join just start it with parameters:
 
-`sudo ./join enp0s8 192.168.56.110:6443`
+`sudo ./join enp0s8 192.168.56.100:6443`
