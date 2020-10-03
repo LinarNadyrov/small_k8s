@@ -62,3 +62,12 @@ Cеть может быть Flannel или Calico, на выбор.
 Чтобы присоединиться, запускаем с параметрами:
 
 `sudo ./join enp0s8 192.168.56.100:6443`
+
+
+## Создание кластера четыря командами 
+```
+git clone git@github.com:LinarNadyrov/small_k8s.git 
+cd small_k8s/vagrant/three
+vagrant up
+vagrant ssh k1s-master -c 'cat /home/vagrant/.kube/config' > ~/.kube/config 
+```

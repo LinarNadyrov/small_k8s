@@ -17,7 +17,7 @@ git clone https://github.com/LinarNadyrov/small_k8s.git
 SCRIPT
 
 $provision_master = <<SCRIPT
-cd k1s
+cd small_k8s
 
 ./install
 
@@ -29,7 +29,7 @@ rm -rf ~/.kube
 SCRIPT
 
 $provision_node = <<SCRIPT
-cd k1s
+cd small_k8s
 
 ./install
 

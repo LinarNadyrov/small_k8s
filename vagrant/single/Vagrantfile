@@ -3,7 +3,7 @@
 
 $network = ENV["NETWORK"] || "calico"
 
-$ip = "192.168.33.110"
+$ip = "192.168.33.100"
 
 $script = <<SCRIPT
 apt-get update
@@ -11,7 +11,7 @@ apt-get install -qy git
 
 git clone https://github.com/LinarNadyrov/small_k8s.git
 
-cd k1s
+cd small_k8s
 
 ./install
 
